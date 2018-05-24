@@ -1,0 +1,22 @@
+{
+  "name": "gulp_starter",
+  "version": "1.0.0",
+  "description": "Base Gulp configuration for easier front-end development start.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/njagojevic/gulp_starter.git"
+  },
+  "author": "Igor Njagojevic <igor.njagojevic@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://gitlab.com/njagojevic/gulp_starter/issues"
+  },
+  "homepage": "https://gitlab.com/njagojevic/gulp_starter#README",
+  "devDependencies": {
+    "gulp": "^3.9.1"
+  }
+}
