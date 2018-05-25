@@ -127,6 +127,18 @@ gulp.task('images', function() {
 });
 
 /*
+ *  --------------------------
+ *  Fonts task
+ *  --------------------------
+ *  - Copy all necessary fonts
+ *  --------------------------
+ */
+gulp.task('fonts', function() {
+    return gulp.src(config.fonts)
+        .pipe(gulp.dest(config.build_fonts));
+});
+
+/*
  *  ------------------------
  *  Clean task
  *  ------------------------
@@ -167,12 +179,10 @@ gulp.task('watch', ['browsersync'], function() {
  *  ----------
  */
 gulp.task('build', function(){
-    log('>>> Building project <<<')
+    log('>>> Building project <<<');
     runSequence(
-        'sass',
-        'scripts',
-        'clean',
-        'images'
+        ['sass', 'scripts', 'images', 'fonts'],
+        'clean'
     );
 });
 
@@ -181,7 +191,7 @@ gulp.task('build', function(){
  *  Default task
  *  ------------
  */
-gulp.task('default', ['browsersync'], function(){
+gulp.task('default', function(){
     runSequence(
         'sass',
         'scripts',
@@ -210,6 +220,6 @@ function log(msg) {
 }
 
 function clean(path) {
-    log('Cleaning: ' + $.util.colors.blue(path));
+    log('>>> Cleaning: ' + $.util.colors.blue(path) + ' <<<');
     del(path);
 }

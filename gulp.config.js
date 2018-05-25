@@ -23,6 +23,12 @@ module.exports = function() {
 
         // Images build
         build_images: 'dist/images/',
+
+        // Fonts
+        fonts: 'assets/fonts/*',
+
+        // Fonts build
+        build_fonts: 'dist/fonts/',
         /* ----------------------------- */
 
         /* Supported browsers */
