@@ -1,6 +1,7 @@
 // Load gulp and plugins
 var gulp =          require('gulp'),
     config =        require('./gulp.config')(),
+    scsslint =      require('gulp-scss-lint'),
     del =           require('del'),
     runSequence =   require('run-sequence'),
     $ =             require('gulp-load-plugins')({lazy: true});
@@ -12,8 +13,8 @@ var gulp =          require('gulp'),
  *  Create minified version of CSS
  *  Generate sourcemaps
  */
-gulp.task('sass', function() {
-    log('Compiling Sass --> CSS');
+gulp.task('sass', ['scss-lint'], function() {
+    log('Compiling SASS --> CSS');
     return gulp.src(config.sass)
         .pipe($.sourcemaps.init())
         .pipe($.sass())
@@ -31,6 +32,16 @@ gulp.task('sass', function() {
  */
 gulp.task('clean', function() {
     clean(config.temp);
+});
+
+/*
+ *  SCSS lint task
+ *  Linting Sass code
+ */
+gulp.task('scss-lint', function () {
+    log('Linting SASS code');
+    return gulp.src(config.sass)
+        .pipe(scsslint());
 });
 
 /*
