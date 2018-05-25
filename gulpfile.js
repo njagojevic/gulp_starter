@@ -4,18 +4,21 @@ var gulp =          require('gulp'),
     scsslint =      require('gulp-scss-lint'),
     print =         require('gulp-print').default,
     del =           require('del'),
-    runSequence =   require('run-sequence'),
+    runSequence =   require('run-sequence').use(gulp),
     args =          require('yargs').argv,
+    browserSync =   require('browser-sync').create(),
     $ =             require('gulp-load-plugins')({lazy: true});
 
 /*
+ *  -------------------------------------------
  *  SASS task
- *  ------------------------------
- *  Compile SASS to CSS
- *  Add vendor prefixes
- *  Create minified version of CSS
- *  Generate sourcemaps
- *  ------------------------------
+ *  -------------------------------------------
+ *  - Compile SASS to CSS
+ *  - Add vendor prefixes
+ *  - Create minified version of CSS
+ *  - Generate sourcemaps
+ *  - Reload browser if browserSync initialized
+ *  -------------------------------------------
  */
 gulp.task('sass', ['scss-lint'], function() {
     log('Compiling SASS --> CSS');
@@ -27,14 +30,16 @@ gulp.task('sass', ['scss-lint'], function() {
         .pipe($.cssmin())
         .pipe($.rename({ suffix: '.min' }))
         .pipe($.sourcemaps.write('./'))
-        .pipe(gulp.dest(config.css));
+        .pipe(gulp.dest(config.css))
+        .pipe(browserSync.reload({stream: true}));
 });
 
 /*
+ *  -------------------
  *  SCSS lint task
- *  -----------------
- *  Linting Sass code
- *  -----------------
+ *  -------------------
+ *  - Linting Sass code
+ *  -------------------
  */
 gulp.task('scss-lint', function () {
     log('Linting SASS code');
@@ -43,12 +48,14 @@ gulp.task('scss-lint', function () {
 });
 
 /*
+ *  -------------------------------------------
  *  Scripts task
- *  --------------------
- *  Concatenate js files
- *  Minify js
- *  Generate sourcemaps
- *  --------------------
+ *  -------------------------------------------
+ *  - Concatenate js files
+ *  - Minify js
+ *  - Generate sourcemaps
+ *  - Reload browser if browserSync initialized
+ *  -------------------------------------------
  */
 gulp.task('scripts', ['js-hint'], function() {
     log('Concat & Minify JS');
@@ -59,14 +66,16 @@ gulp.task('scripts', ['js-hint'], function() {
         .pipe($.rename({ suffix: '.min' }))
         .pipe($.uglifyes())
         .pipe($.sourcemaps.write('./'))
-        .pipe(gulp.dest(config.build_js));
+        .pipe(gulp.dest(config.build_js))
+        .pipe(browserSync.reload({stream: true}));
 });
 
 /*
+ * --------------------------------------
  * JS Hint task
- * ------------------------------------
- * Analyze JS code with JSHint and JSCS
- * ------------------------------------
+ * --------------------------------------
+ * - Analyze JS code with JSHint and JSCS
+ * --------------------------------------
  */
 gulp.task('js-hint', function() {
     log('Analyzing source with JSHint and JSCS');
@@ -80,29 +89,46 @@ gulp.task('js-hint', function() {
 });
 
 /*
+ *  -----------------------------------
+ *  BrowserSync task
+ *  -----------------------------------
+ *  - Syncing code changes on file save
+ *  -----------------------------------
+ */
+gulp.task('browsersync', function() {
+    log('Initialize browserSync');
+    browserSync.init({
+        proxy: config.proxy
+    });
+});
+
+/*
+ *  ------------------------
  *  Clean task
- *  ----------------------
- *  Remove temporary files
- *  ----------------------
+ *  ------------------------
+ *  - Remove temporary files
+ *  ------------------------
  */
 gulp.task('clean', function() {
     clean(config.temp);
 });
 
 /*
+ *  ----------------------------------------
  *  Watch task
- *  ------------------
- *  Watch SASS changes
- *  Watch JS changes
- *  ------------------
+ *  ----------------------------------------
+ *  - Watch SASS changes
+ *  - Watch JS changes
+ *  ----------------------------------------
  */
-gulp.task('watch', function() {
+gulp.task('watch', ['browsersync'], function() {
     gulp.watch(config.sass, function(){
         runSequence(
             'sass',
             'clean'
         );
     });
+
     gulp.watch(config.js, function(){
         runSequence(
             'scripts',
@@ -112,10 +138,11 @@ gulp.task('watch', function() {
 });
 
 /*
+ *  -------------
  *  Default task
  *  -------------
  */
-gulp.task('default', function(){
+gulp.task('default', ['browsersync'], function(){
     runSequence(
         'sass',
         'scripts',
@@ -123,7 +150,14 @@ gulp.task('default', function(){
     );
 });
 
-// Custom functions
+/*
+ *  ------------------------
+ *  Custom functions
+ *  ------------------------
+ *  - Show log messages
+ *  - Delete files & folders
+ *  ------------------------
+ */
 function log(msg) {
     if (typeof(msg) === 'object') {
         for (var item in msg) {

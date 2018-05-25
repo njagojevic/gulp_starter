@@ -23,7 +23,11 @@ module.exports = function() {
         browsers: [
             'last 2 version',
             '> 5%'
-        ]
+        ],
+        /* ----------------------------- */
+
+        // BrowserSync proxy
+        proxy: 'gulp-starter.local'
     };
 
     return config;
