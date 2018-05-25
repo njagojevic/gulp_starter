@@ -1,0 +1,1 @@
+{"version":3,"sources":["base/_general-styles.scss"],"names":[],"mappings":"AACA;EACE,gBAAe,EAChB","file":"style.min.css","sourcesContent":["// General styles\r\nbody {\r\n  font-size: 16px;\r\n}\r\n"]}
