@@ -9,24 +9,30 @@ module.exports = function() {
         // Sass files
         sass: 'assets/sass/**/*.scss',
 
+        // CSS build
+        css: 'dist/css/',
+
         // JS files
         js: 'assets/js/**/*.js',
 
-        // CSS build path
-        css: 'dist/css/',
-
-        // JS build path
+        // JS build
         build_js: 'dist/js/',
+
+        // Images
+        images: 'assets/images/**/*.{gif,png,jpg,svg}',
+
+        // Images build
+        build_images: 'dist/images/',
         /* ----------------------------- */
 
         /* Supported browsers */
         browsers: [
             'last 2 version',
-            '> 5%'
+            '> 2%'
         ],
         /* ----------------------------- */
 
-        // BrowserSync proxy
+        /* BrowserSync proxy */
         proxy: 'gulp-starter.local'
     };
 

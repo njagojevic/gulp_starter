@@ -1,7 +1,6 @@
 // Load gulp and plugins
 var gulp =          require('gulp'),
     config =        require('./gulp.config')(),
-    scsslint =      require('gulp-scss-lint'),
     print =         require('gulp-print').default,
     del =           require('del'),
     runSequence =   require('run-sequence').use(gulp),
@@ -21,7 +20,7 @@ var gulp =          require('gulp'),
  *  -------------------------------------------
  */
 gulp.task('sass', ['scss-lint'], function() {
-    log('Compiling SASS --> CSS');
+    log('>>> Compiling SASS --> CSS <<<');
     return gulp.src(config.sass)
         .pipe($.sourcemaps.init())
         .pipe($.sass())
@@ -42,9 +41,9 @@ gulp.task('sass', ['scss-lint'], function() {
  *  -------------------
  */
 gulp.task('scss-lint', function () {
-    log('Linting SASS code');
+    log('>>> Linting SASS code <<<');
     return gulp.src(config.sass)
-        .pipe(scsslint());
+        .pipe($.scssLint());
 });
 
 /*
@@ -53,15 +52,17 @@ gulp.task('scss-lint', function () {
  *  -------------------------------------------
  *  - Concatenate js files
  *  - Minify js
+ *  - Remove debug statements
  *  - Generate sourcemaps
  *  - Reload browser if browserSync initialized
  *  -------------------------------------------
  */
 gulp.task('scripts', ['js-hint'], function() {
-    log('Concat & Minify JS');
+    log('>>> Concat & Minify JS <<<');
     return gulp.src(config.js)
         .pipe($.sourcemaps.init())
         .pipe($.concat('main.js'))
+        .pipe($.stripDebug())
         .pipe(gulp.dest(config.temp))
         .pipe($.rename({ suffix: '.min' }))
         .pipe($.uglifyes())
@@ -71,16 +72,15 @@ gulp.task('scripts', ['js-hint'], function() {
 });
 
 /*
- * --------------------------------------
- * JS Hint task
- * --------------------------------------
- * - Analyze JS code with JSHint and JSCS
- * --------------------------------------
+ *  --------------------------------------
+ *  JS Hint task
+ *  --------------------------------------
+ *  - Analyze JS code with JSHint and JSCS
+ *  --------------------------------------
  */
 gulp.task('js-hint', function() {
-    log('Analyzing source with JSHint and JSCS');
-    return gulp
-        .src(config.js)
+    log('>>> Analyzing source with JSHint and JSCS <<<');
+    return gulp.src(config.js)
         .pipe($.if(args.verbose, print()))
         .pipe($.jscs())
         .pipe($.jshint())
@@ -96,10 +96,34 @@ gulp.task('js-hint', function() {
  *  -----------------------------------
  */
 gulp.task('browsersync', function() {
-    log('Initialize browserSync');
+    log('>>> Initialize browserSync <<<');
     browserSync.init({
         proxy: config.proxy
     });
+});
+
+/*
+ *  --------------------------
+ *  Images task
+ *  --------------------------
+ *  - Minify images into build
+ *  --------------------------
+ */
+gulp.task('images', function() {
+    log('>>> Optimizing images <<<');
+    return gulp.src(config.images)
+        .pipe($.cache($.imagemin([
+            $.imagemin.gifsicle({interlaced: true}),
+            $.imagemin.jpegtran({progressive: true}),
+            $.imagemin.optipng({optimizationLevel: 5}),
+            $.imagemin.svgo({
+                plugins: [
+                    {removeViewBox: true},
+                    {cleanupIDs: false}
+                ]
+            })
+        ])))
+        .pipe(gulp.dest(config.build_images));
 });
 
 /*
@@ -138,9 +162,24 @@ gulp.task('watch', ['browsersync'], function() {
 });
 
 /*
- *  -------------
+ *  ----------
+ *  Build task
+ *  ----------
+ */
+gulp.task('build', function(){
+    log('>>> Building project <<<')
+    runSequence(
+        'sass',
+        'scripts',
+        'clean',
+        'images'
+    );
+});
+
+/*
+ *  ------------
  *  Default task
- *  -------------
+ *  ------------
  */
 gulp.task('default', ['browsersync'], function(){
     runSequence(
