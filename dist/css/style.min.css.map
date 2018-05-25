@@ -1,0 +1,1 @@
+{"version":3,"sources":["base/_general-styles.scss"],"names":[],"mappings":"AACA;EACE,gCAA+B;EAC/B,gBAAe;EACf,kBAAiB;EACjB,mBAAkB,EACnB","file":"style.min.css","sourcesContent":["// General styles\r\nbody {\r\n  font-family: Ubuntu, sans-serif;\r\n  font-size: 16px;\r\n  font-weight: bold;\r\n  text-align: center;\r\n}\r\n"]}

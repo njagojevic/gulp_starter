@@ -1,0 +1,2 @@
+// Main scripts
+let main;

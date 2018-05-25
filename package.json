@@ -1,0 +1,47 @@
+{
+  "name": "gulp_starter",
+  "version": "1.0.0",
+  "description": "Base Gulp configuration for easier front-end development start.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/njagojevic/gulp_starter.git"
+  },
+  "author": "Igor Njagojevic <igor.njagojevic@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://gitlab.com/njagojevic/gulp_starter/issues"
+  },
+  "homepage": "https://gitlab.com/njagojevic/gulp_starter#README",
+  "devDependencies": {
+    "browser-sync": "^2.24.4",
+    "del": "^3.0.0",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^5.0.0",
+    "gulp-cache": "^1.0.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-cssmin": "^0.2.0",
+    "gulp-if": "^2.0.2",
+    "gulp-imagemin": "^4.1.0",
+    "gulp-jscs": "^4.1.0",
+    "gulp-jshint": "^2.1.0",
+    "gulp-load-plugins": "^1.5.0",
+    "gulp-plumber": "^1.2.0",
+    "gulp-print": "^5.0.0",
+    "gulp-rename": "^1.2.3",
+    "gulp-sass": "^4.0.1",
+    "gulp-scss-lint": "^0.6.1",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-strip-debug": "^3.0.0",
+    "gulp-uglifyes": "^0.1.3",
+    "gulp-util": "^3.0.8",
+    "jshint": "^2.9.5",
+    "jshint-stylish": "^2.2.1",
+    "run-sequence": "^2.2.1",
+    "yargs": "^11.0.0"
+  },
+  "dependencies": {}
+}
