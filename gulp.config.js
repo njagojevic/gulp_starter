@@ -38,7 +38,12 @@ module.exports = function() {
         ],
         /* ----------------------------- */
 
-        /* BrowserSync proxy */
+        /**
+         *
+         * BrowserSync proxy
+         * (vHost or other)
+         *
+         * */
         proxy: 'gulp-starter.local'
     };
 
