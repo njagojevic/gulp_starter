@@ -6,6 +6,7 @@ var gulp =          require('gulp'),
     runSequence =   require('run-sequence').use(gulp),
     args =          require('yargs').argv,
     browserSync =   require('browser-sync').create(),
+    sassLint =      require('gulp-sass-lint'),
     $ =             require('gulp-load-plugins')({lazy: true});
 
 /*
@@ -19,7 +20,7 @@ var gulp =          require('gulp'),
  *  - Reload browser if browserSync initialized
  *  -------------------------------------------
  */
-gulp.task('sass', ['scss-lint'], function() {
+gulp.task('sass', ['sass-lint'], function() {
     log('>>> Compiling SASS --> CSS <<<');
     return gulp.src(config.sass)
         .pipe($.sourcemaps.init())
@@ -40,10 +41,12 @@ gulp.task('sass', ['scss-lint'], function() {
  *  - Linting Sass code
  *  -------------------
  */
-gulp.task('scss-lint', function () {
+gulp.task('sass-lint', function () {
     log('>>> Linting SASS code <<<');
     return gulp.src(config.sass)
-        .pipe($.scssLint());
+        .pipe(sassLint())
+        .pipe(sassLint.format())
+        .pipe(sassLint.failOnError());
 });
 
 /*
